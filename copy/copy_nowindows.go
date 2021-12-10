@@ -15,6 +15,9 @@ func copyXAttrs(dst, src string, xeh XAttrErrorHandler) error {
 		return xeh(dst, src, "", errors.Wrapf(err, "failed to list xattrs on %s", src))
 	}
 	for _, xattr := range xattrKeys {
+		if xattr == "security.PDPL" {
+			continue
+		}
 		data, err := sysx.LGetxattr(src, xattr)
 		if err != nil {
 			return xeh(dst, src, xattr, errors.Wrapf(err, "failed to get xattr %q on %s", xattr, src))
